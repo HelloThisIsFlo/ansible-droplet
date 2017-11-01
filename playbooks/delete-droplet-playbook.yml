@@ -1,0 +1,49 @@
+- hosts: localhost
+
+  # Pass `droplet_name` need to be passed as `--extra-var`
+  # Pass `droplet_name` need to be passed as `--extra-var`
+  # Pass `droplet_name` need to be passed as `--extra-var`
+
+  vars:
+    do_token: 6464dbcf8a919abb5f2bc2d271881fe7b07b135605cc750ca009640a7244d1ff
+
+  tasks:
+    - name: "Ensure 'droplet_name' is passed as parameter"
+      assert:
+        that: droplet_name != ""
+
+    - name: "Delete droplet"
+      block:
+      - name: Get Droplet info
+        digital_ocean:
+          unique_name: yes
+          api_token: "{{ do_token }}"
+          name: "{{ droplet_name }}"
+        register: droplet_data
+
+      - name: Remove droplet
+        digital_ocean:
+          api_token: "{{ do_token }}"
+          id: "{{ droplet_data.droplet.id }}"
+          state: deleted
+
+      rescue:
+      - debug: 
+          msg: "Error!! Are you sure Droplet '{{ droplet_name}}' exist?"
+
+    - name: "Remove Host Quick-Access from `.ssh/config`"
+      blockinfile:
+        path: "{{ ansible_env.HOME }}/.ssh/config"
+        state: absent
+        marker: "# {mark} Ansible-managed DigitalOcean Droplet: '{{ droplet_name }}'"
+        block: |
+          Host {{ droplet_name }}
+            Hostname {{ droplet_data.droplet.ip_address }}
+            User root
+
+    - name: "Remove Droplet from Ansible Host in `inventory/docker-machines`"
+      lineinfile:
+        path: ../../inventory/docker-machines
+        state: absent
+        line: "{{ droplet_name }} ansible_host={{ droplet_data.droplet.ip_address }} ansible_user=root ansible_python_interpreter=/usr/bin/python3"
+

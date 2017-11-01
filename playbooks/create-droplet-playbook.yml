@@ -1,0 +1,76 @@
+- hosts: localhost
+
+  # Pass `droplet_name` need to be passed as `--extra-var`
+  # Pass `droplet_name` need to be passed as `--extra-var`
+  # Pass `droplet_name` need to be passed as `--extra-var`
+
+  vars:
+    # TODO: When put in file do not forget to regenerate new key AND INVALIDATE THIS ONE !!!
+    do_token: 6464dbcf8a919abb5f2bc2d271881fe7b07b135605cc750ca009640a7244d1ff
+    ssh_key_file: "{{ ansible_env.HOME }}/.ssh/id_rsa.pub"
+    droplet_size: "512mb"
+    droplet_region: "fra1"
+    droplet_image: "ubuntu-16-04-x64"
+
+  tasks:
+    - name: "Ensure 'droplet_name' is passed as parameter"
+      assert:
+        that: droplet_name != ""
+
+    - name: "Ensure SSH Key exists at DigitalOcean | Using key at: {{ ssh_key_file }}"
+      digital_ocean:
+        command: ssh
+        state: present
+        name: "Main SSH Key"
+        ssh_pub_key: "{{ lookup('file', ssh_key_file) }}"
+        api_token: "{{ do_token }}"
+      register: ssh_key_on_do
+
+    - name: "Create Droplet: \"{{ droplet_name }}\""
+      digital_ocean:
+        api_token: "{{ do_token }}"
+        command: droplet
+        ssh_key_ids: "{{ ssh_key_on_do.ssh_key.id }}"
+        unique_name: yes
+        state: present
+        name: "{{ droplet_name }}"
+        size_id: "{{ droplet_size }}"
+        region_id: "{{ droplet_region }}"
+        image_id: "{{ droplet_image }}"
+      register: created
+
+    - name: "Add Host in `.ssh/config`. For SSH Quick-Access ==> `ssh {{ droplet_name }}`"
+      blockinfile:
+        path: "{{ ansible_env.HOME }}/.ssh/config"
+        state: present
+        marker: "# {mark} Ansible-managed DigitalOcean Droplet: '{{ droplet_name }}'"
+        block: |
+          Host {{ droplet_name }}
+            Hostname {{ created.droplet.ip_address }}
+            User root
+
+    - name: "Add Droplet as Ansible Host in `inventory/docker-machines`"
+      lineinfile:
+        path: ../../inventory/docker-machines
+        state: present
+        create: yes
+        line: "{{ droplet_name }} ansible_host={{ created.droplet.ip_address }} ansible_user=root ansible_python_interpreter=/usr/bin/python3"
+
+    - name: "Refresh inventory"
+      meta: refresh_inventory
+
+
+- hosts: "{{ droplet_name }}"
+  gather_facts: False
+  tasks:
+    - name: "Wait for Droplet available"
+      wait_for_connection:
+        timeout: 60
+
+    - name: "Gather Facts"
+      setup: 
+
+    - debug: 
+       msg: "Droplet '{{ droplet_name }}' succesfuly created | IP = {{ ansible_default_ipv4.address }}"
+    
+
