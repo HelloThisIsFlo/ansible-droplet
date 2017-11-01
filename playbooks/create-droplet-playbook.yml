@@ -4,6 +4,7 @@
     # `droplet_name` need to be passed as `--extra-var` !!
     do_token: 6464dbcf8a919abb5f2bc2d271881fe7b07b135605cc750ca009640a7244d1ff # TODO: When put in file do not forget to regenerate new key AND INVALIDATE THIS ONE !!!
     ssh_key_file: "{{ ansible_env.HOME }}/.ssh/id_rsa.pub"
+    ssh_key_name_on_digitalocean: "Main SSH Key"
     droplet_size: "512mb"
     droplet_region: "fra1"
     droplet_image: "ubuntu-16-04-x64"
@@ -18,7 +19,7 @@
       digital_ocean:
         command: ssh
         state: present
-        name: "Main SSH Key"
+        name: "{{ ssh_key_name_on_digitalocean }}"
         ssh_pub_key: "{{ lookup('file', ssh_key_file) }}"
         api_token: "{{ do_token }}"
       register: ssh_key_on_do
