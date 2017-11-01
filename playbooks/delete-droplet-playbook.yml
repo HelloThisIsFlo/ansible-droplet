@@ -1,13 +1,11 @@
 - hosts: localhost
 
-  # Pass `droplet_name` need to be passed as `--extra-var`
-  # Pass `droplet_name` need to be passed as `--extra-var`
-  # Pass `droplet_name` need to be passed as `--extra-var`
-
   vars:
-    do_token: 6464dbcf8a919abb5f2bc2d271881fe7b07b135605cc750ca009640a7244d1ff
+    # `droplet_name` need to be passed as `--extra-var` !!
+    do_token: 6464dbcf8a919abb5f2bc2d271881fe7b07b135605cc750ca009640a7244d1ff # TODO: When put in file do not forget to regenerate new key AND INVALIDATE THIS ONE !!!
 
   tasks:
+    # `droplet_name` need to be passed as `--extra-var` !!
     - name: "Ensure 'droplet_name' is passed as parameter"
       assert:
         that: droplet_name != ""
@@ -43,7 +41,7 @@
 
     - name: "Remove Droplet from Ansible Host in `inventory/docker-machines`"
       lineinfile:
-        path: ../../inventory/docker-machines
+        path: ../inventory/docker-machines
         state: absent
         line: "{{ droplet_name }} ansible_host={{ droplet_data.droplet.ip_address }} ansible_user=root ansible_python_interpreter=/usr/bin/python3"
 

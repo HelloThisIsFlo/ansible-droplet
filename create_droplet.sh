@@ -14,7 +14,7 @@ DROPLET_NAME=$1
 
 # `cd` in ansible directory to get ansible config: `ansible.cfg` and `inventory` directory
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-cd $SCRIPT_DIR/..
+cd $SCRIPT_DIR
 
 # Run "Create droplet" playbook
-ansible-playbook ./digitalocean-droplet/playbooks/create-droplet-playbook.yml --extra-vars "droplet_name=$DROPLET_NAME"
+ansible-playbook ./playbooks/create-droplet-playbook.yml --extra-vars "droplet_name=$DROPLET_NAME"

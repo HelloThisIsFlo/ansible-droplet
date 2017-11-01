@@ -1,18 +1,15 @@
 - hosts: localhost
 
-  # Pass `droplet_name` need to be passed as `--extra-var`
-  # Pass `droplet_name` need to be passed as `--extra-var`
-  # Pass `droplet_name` need to be passed as `--extra-var`
-
   vars:
-    # TODO: When put in file do not forget to regenerate new key AND INVALIDATE THIS ONE !!!
-    do_token: 6464dbcf8a919abb5f2bc2d271881fe7b07b135605cc750ca009640a7244d1ff
+    # `droplet_name` need to be passed as `--extra-var` !!
+    do_token: 6464dbcf8a919abb5f2bc2d271881fe7b07b135605cc750ca009640a7244d1ff # TODO: When put in file do not forget to regenerate new key AND INVALIDATE THIS ONE !!!
     ssh_key_file: "{{ ansible_env.HOME }}/.ssh/id_rsa.pub"
     droplet_size: "512mb"
     droplet_region: "fra1"
     droplet_image: "ubuntu-16-04-x64"
 
   tasks:
+    # `droplet_name` need to be passed as `--extra-var` !!
     - name: "Ensure 'droplet_name' is passed as parameter"
       assert:
         that: droplet_name != ""
@@ -51,7 +48,7 @@
 
     - name: "Add Droplet as Ansible Host in `inventory/docker-machines`"
       lineinfile:
-        path: ../../inventory/docker-machines
+        path: ../inventory/docker-machines
         state: present
         create: yes
         line: "{{ droplet_name }} ansible_host={{ created.droplet.ip_address }} ansible_user=root ansible_python_interpreter=/usr/bin/python3"
