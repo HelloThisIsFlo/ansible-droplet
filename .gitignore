@@ -1,2 +1,2 @@
-inventory/docker-machines
-venv
+ansible/inventory/docker-machines
+ansible/temp-virtualenv

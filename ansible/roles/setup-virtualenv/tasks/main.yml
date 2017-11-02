@@ -1,0 +1,10 @@
+- name: "Create virtual environment and install dopy (required by DigitalOcean module)"
+  pip:
+    name: dopy
+    version: 0.3.5
+    virtualenv: "{{ virtualenv }}"
+    virtualenv_python: python2.7
+
+- name: "Set the python interpreter to use in the rest of the current Playbook"
+  set_fact:
+    ansible_python_interpreter: "{{ virtualenv }}/bin/python"

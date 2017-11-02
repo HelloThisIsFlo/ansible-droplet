@@ -2,15 +2,24 @@
 
   vars:
     # `droplet_name` need to be passed as `--extra-var` !!
+
+    # Remote auth thing
     do_token: 6464dbcf8a919abb5f2bc2d271881fe7b07b135605cc750ca009640a7244d1ff # TODO: When put in file do not forget to regenerate new key AND INVALIDATE THIS ONE !!!
+
+    # "Local" auth thing
     ssh_key_file: "{{ ansible_env.HOME }}/.ssh/id_rsa.pub"
+
+    # Actual characteristics of the Droplet we want to create
     ssh_key_name_on_digitalocean: "Main SSH Key"
     droplet_size: "512mb"
     droplet_region: "fra1"
     droplet_image: "ubuntu-16-04-x64"
-    ansible_python_interpreter: ../venv/bin/python/bin/python
 
   tasks:
+    - name: "Install dopy in a virtualenv and set ansible to use it"
+      include_role:
+        name: setup-virtualenv
+
     # `droplet_name` need to be passed as `--extra-var` !!
     - name: "Ensure 'droplet_name' is passed as parameter"
       assert:
@@ -24,6 +33,7 @@
         ssh_pub_key: "{{ lookup('file', ssh_key_file) }}"
         api_token: "{{ do_token }}"
       register: ssh_key_on_do
+
 
     - name: "Create Droplet: \"{{ droplet_name }}\""
       digital_ocean:
@@ -50,7 +60,7 @@
 
     - name: "Add Droplet as Ansible Host in `inventory/docker-machines`"
       lineinfile:
-        path: ../inventory/docker-machines
+        path: "{{ ansible_env.PWD }}/inventory/docker-machines"
         state: present
         create: yes
         line: "{{ droplet_name }} ansible_host={{ created.droplet.ip_address }} ansible_user=root ansible_python_interpreter=/usr/bin/python3"
