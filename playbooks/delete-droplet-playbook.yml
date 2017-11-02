@@ -3,6 +3,7 @@
   vars:
     # `droplet_name` need to be passed as `--extra-var` !!
     do_token: 6464dbcf8a919abb5f2bc2d271881fe7b07b135605cc750ca009640a7244d1ff # TODO: When put in file do not forget to regenerate new key AND INVALIDATE THIS ONE !!!
+    ansible_python_interpreter: ../venv/bin/python/bin/python
 
   tasks:
     # `droplet_name` need to be passed as `--extra-var` !!

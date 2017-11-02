@@ -16,5 +16,8 @@ DROPLET_NAME=$1
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $SCRIPT_DIR
 
+# Create python virtual environment
+ansible-playbook ./playbooks/init-playbook.yml
+
 # Run "Create droplet" playbook
 ansible-playbook ./playbooks/create-droplet-playbook.yml --extra-vars "droplet_name=$DROPLET_NAME"

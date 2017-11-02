@@ -1,0 +1,8 @@
+- hosts: localhost
+  tasks:
+    - name: Create virtual environment and install dopy (required by DigitalOcean module)
+      pip:
+        name: dopy
+        version: 0.3.5
+        virtualenv: /Users/antoniopires/Desktop/digitalocean-droplets/venv/bin/python
+        virtualenv_python: python2.7
