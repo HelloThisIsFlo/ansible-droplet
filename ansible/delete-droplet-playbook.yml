@@ -45,7 +45,7 @@
 
     - name: "Remove Droplet from Ansible Host in `inventory/docker-machines`"
       lineinfile:
-        path: ../inventory/docker-machines
+        path: "{{ ansible_env.PWD }}/inventory/docker-machines"
         state: absent
         line: "{{ droplet_name }} ansible_host={{ droplet_data.droplet.ip_address }} ansible_user=root ansible_python_interpreter=/usr/bin/python3"
 
