@@ -95,6 +95,9 @@
       include_role:
         name: glances
 
+    - name: "Enable advanced metrics on DigitalOcean"
+      shell: "curl -sSL https://agent.digitalocean.com/install.sh | sh"
+
     - debug: 
        msg: "Droplet '{{ droplet_name }}' succesfuly created | IP = {{ ansible_default_ipv4.address }}"
     
