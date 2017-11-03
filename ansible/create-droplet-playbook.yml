@@ -79,6 +79,18 @@
     - name: "Gather Facts"
       setup: 
 
+    - name: "Load Swap size from specs of the droplet to create"
+      include_role:
+        name: load-droplet-specs
+      vars:
+        droplet_spec_name: droplet_spec_name
+
+    - name: "Add Swap"
+      include_role:
+        name: kamaln7.swapfile
+      vars:
+        swapfile_size: "{{ droplet_specs.swap }}"
+
     - debug: 
        msg: "Droplet '{{ droplet_name }}' succesfuly created | IP = {{ ansible_default_ipv4.address }}"
     

@@ -1,3 +1,9 @@
+# Size conventions:
+#
+# - size: `XXXmb` or `Xgb`
+# - swap: `XXXMiB` or `XGiB`
+
 size: "1gb"
 region: "fra1"
 image: "ubuntu-16-04-x64"
+swap: "4GiB"

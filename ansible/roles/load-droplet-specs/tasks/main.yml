@@ -1,4 +1,4 @@
 - name: "Load droplet specs from spec file"
   include_vars:
-    file: "{{ ansible_env.PWD }}/droplet_specs/{{ droplet_spec_name }}.yaml"
+    file: "droplet_specs/{{ droplet_spec_name }}.yaml"
     name: droplet_specs
