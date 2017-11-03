@@ -26,7 +26,7 @@
       vars:
         droplet_spec_name: droplet_spec_name
 
-    - name: "Ensure SSH Key exists at DigitalOcean | Using key at: {{ ssh_key_file }}"
+    - name: "Ensure SSH Key exists at DigitalOcean | Using key at: {{ ssh_pub_key_to_load_on_droplet_location }}"
       digital_ocean:
         command: ssh
         state: present
