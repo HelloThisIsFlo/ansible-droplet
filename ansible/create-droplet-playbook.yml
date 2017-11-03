@@ -58,9 +58,9 @@
             Hostname {{ created.droplet.ip_address }}
             User root
 
-    - name: "Add Droplet as Ansible Host in `inventory/docker-machines`"
+    - name: "Add Droplet as Ansible Host in `inventory/ansible-machines`"
       lineinfile:
-        path: "{{ ansible_env.PWD }}/inventory/docker-machines"
+        path: "{{ ansible_env.PWD }}/inventory/ansible-machines"
         state: present
         create: yes
         line: "{{ droplet_name }} ansible_host={{ created.droplet.ip_address }} ansible_user=root ansible_python_interpreter=/usr/bin/python3"

@@ -1,4 +1,4 @@
-ansible/inventory/docker-machines
+ansible/inventory/ansible-machines
 ansible/group_vars/all
 ansible/roles/roles-on-droplet/roles-from-ansible-galaxy
 ansible/debug-playbook.yml
