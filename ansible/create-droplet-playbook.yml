@@ -4,7 +4,8 @@
     # `droplet_name` need to be passed as `--extra-var` !!
 
     # Remote auth thing
-    do_token: 6464dbcf8a919abb5f2bc2d271881fe7b07b135605cc750ca009640a7244d1ff # TODO: When put in file do not forget to regenerate new key AND INVALIDATE THIS ONE !!!
+    do_token: "{{ lookup('file', '{{ digitalocean_token_location }}') }}"
+
 
     # "Local" auth thing
     ssh_key_file: "{{ ansible_env.HOME }}/.ssh/id_rsa.pub"
