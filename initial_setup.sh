@@ -12,7 +12,7 @@ digitalocean_token_location: "{{ ansible_env.HOME }}/config-in-the-cloud/secrets
 }
 
 function install_requirements {
-    ansible-galaxy install -r requirements.yml -p ./external-roles
+    ansible-galaxy install -r requirements.yml -p ./roles/roles-on-droplet/roles-from-ansible-galaxy
 }
 
 echo "##############################"

@@ -1,4 +1,4 @@
 ansible/inventory/docker-machines
 ansible/group_vars/all
-ansible/external-roles
+ansible/roles/roles-on-droplet/roles-from-ansible-galaxy
 .DS_Store
