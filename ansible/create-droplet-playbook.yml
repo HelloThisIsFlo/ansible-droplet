@@ -91,6 +91,10 @@
       vars:
         swapfile_size: "{{ droplet_specs.swap }}"
 
+    - name: "Install Glances Webserver as a service"
+      include_role:
+        name: glances
+
     - debug: 
        msg: "Droplet '{{ droplet_name }}' succesfuly created | IP = {{ ansible_default_ipv4.address }}"
     
