@@ -10,7 +10,7 @@
     # "Local" auth thing
     ssh_key_file: "{{ ansible_env.HOME }}/.ssh/id_rsa.pub"
 
-    # Actual characteristics of the Droplet we want to create
+    # Actual specs of the Droplet we want to create
     ssh_key_name_on_digitalocean: "Main SSH Key"
     droplet_size: "512mb"
     droplet_region: "fra1"
