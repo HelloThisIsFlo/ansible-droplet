@@ -1,0 +1,10 @@
+[Unit]
+Description=Glances Webserver on port 61208
+
+[Service]
+After=network.target
+ExecStart=/usr/local/bin/glances -w
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target

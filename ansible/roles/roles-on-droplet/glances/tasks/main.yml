@@ -1,30 +1,48 @@
-- name: "Install `pip3`"
-  apt:
-    name: python3-pip
-    state: latest
-    update_cache: yes
-  become: yes
+- name: "Install Glances"
+  block:
+    - name: "Install `pip3`"
+      apt:
+        name: python3-pip
+        state: latest
+        update_cache: yes
+      become: yes
 
-- name: "Upgrade `pip3`"
-  pip:
-    name: pip
-    executable: pip3
-    state: latest
-  become: yes
+    - name: "Upgrade `pip3`"
+      pip:
+        name: pip
+        executable: pip3
+        state: latest
+      become: yes
 
-- name: "Install `glances`"
-  pip:
-    name: glances
-    executable: pip3
-    state: latest
-  become: yes
+    - name: "Install `glances`"
+      pip:
+        name: glances
+        executable: pip3
+        state: latest
+      become: yes
 
-- name: "Install `glances` optional dependencies"
-  pip:
-    name: "{{ item }}"
-    executable: pip3
-    state: latest
-  become: yes
-  with_items:
-    - docker
-    - bottle
+    - name: "Install `glances` optional dependencies"
+      pip:
+        name: "{{ item }}"
+        executable: pip3
+        state: latest
+      become: yes
+      with_items:
+        - docker
+        - bottle
+
+- name: "Start Glances Web server as Daemon"
+  block:
+    - name: "Copy `glances.service` file"
+      copy:
+        src: glances.service
+        dest: /etc/systemd/system/glances.service
+        owner: root
+        mode: 0644
+
+    - name: "Start `glances.service` and set to start on boot"
+      service:
+        name: glances.service
+        state: started
+        enabled: yes
+      
