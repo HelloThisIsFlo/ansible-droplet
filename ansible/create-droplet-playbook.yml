@@ -30,7 +30,7 @@
       digital_ocean:
         command: ssh
         state: present
-        name: "{{ ssh_key_name_on_digitalocean }}"
+        name: "{{ ssh_pub_key_name_on_digitalocean }}"
         ssh_pub_key: "{{ ssh_pub_key_to_load_on_droplet }}"
         api_token: "{{ do_token }}"
       register: ssh_key_on_do
