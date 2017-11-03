@@ -1,4 +1,3 @@
 ansible/inventory/docker-machines
-ansible/temp-virtualenv
 ansible/group_vars/all
 .DS_Store

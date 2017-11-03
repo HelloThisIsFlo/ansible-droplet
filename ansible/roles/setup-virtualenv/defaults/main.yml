@@ -1,2 +1,2 @@
-virtualenv_name: "environment_with_dopy"
-virtualenv: "{{ ansible_env.PWD }}/temp-virtualenv/{{ virtualenv_name }}"
+virtualenv_name: "virtualenv_with_dopy"
+virtualenv: "/tmp/digitalocean-droplets/{{ virtualenv_name }}"
