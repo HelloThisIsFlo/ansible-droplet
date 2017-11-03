@@ -1,3 +1,4 @@
 ansible/inventory/docker-machines
 ansible/group_vars/all
+ansible/external-roles
 .DS_Store
