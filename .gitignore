@@ -3,3 +3,4 @@ ansible/group_vars/all
 ansible/roles/roles-on-droplet/roles-from-ansible-galaxy
 ansible/debug-playbook.yml
 .DS_Store
+.vscode
