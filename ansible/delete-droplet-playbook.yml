@@ -38,14 +38,10 @@
         path: "{{ ansible_env.HOME }}/.ssh/config"
         state: absent
         marker: "# {mark} Ansible-managed DigitalOcean Droplet: '{{ droplet_name }}'"
-        block: |
-          Host {{ droplet_name }}
-            Hostname {{ droplet_data.droplet.ip_address }}
-            User root
 
     - name: "Remove Droplet from Ansible Host in `inventory/ansible-machines`"
-      lineinfile:
+      blockinfile:
         path: "{{ ansible_env.PWD }}/inventory/ansible-machines"
         state: absent
-        line: "{{ droplet_name }} ansible_host={{ droplet_data.droplet.ip_address }} ansible_user=root ansible_python_interpreter=/usr/bin/python3"
+        marker: "# {mark} Ansible-managed DigitalOcean Droplet: '{{ droplet_name }}'"
 
