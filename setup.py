@@ -21,7 +21,7 @@ setup(
     url='https://github.com/FlorianKempenich/ansible-droplet',
     author='Florian Kempenich & Antonio Pires',
     author_email='shockn745@gmail.com',
-    packages=['ansible-droplet'],
+    packages=['ansible_droplet'],
     license='MIT',
     scripts=['bin/ansible-droplet'],
     install_requires=[

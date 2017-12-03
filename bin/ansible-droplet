@@ -1,0 +1,6 @@
+#!/usr/bin/env python
+
+import ansible_droplet.cli
+
+if __name__ == '__main__':
+  ansible_droplet.cli.start()

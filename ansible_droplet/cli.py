@@ -1,11 +1,10 @@
-#!/usr/bin/env python
 import click
 import os.path
 import subprocess
 
 SCRIPT_DIR = os.path.dirname(__file__)
 
-ANSIBLE = os.path.join(SCRIPT_DIR, '..', 'ansible')
+ANSIBLE = os.path.join(SCRIPT_DIR, 'ansible')
 REQUIREMENTS = 'roles/roles-on-droplet/roles-from-ansible-galaxy'
 CONFIGURATION = 'group_vars'
 CONFIGURATION_FILE = 'all'
@@ -83,27 +82,26 @@ def _run(cmd):
 #########################
 ##### Cli functions #####
 #########################
-cli = click.Group()
+def start():
+    cli = click.Group()
 
-@cli.command('create')
-@click.argument('name', type=str)
-@click.argument('droplet-spec', type=click.Choice(['micro', 'mini', 'power']), default='micro')
-def create(name, droplet_spec):
-    _set_configuration_if_needed()
-    _install_requirements_if_needed()
-    _create_droplet(name, droplet_spec)
+    @cli.command('create')
+    @click.argument('name', type=str)
+    @click.argument('droplet-spec', type=click.Choice(['micro', 'mini', 'power']), default='micro')
+    def create(name, droplet_spec):
+        _set_configuration_if_needed()
+        _install_requirements_if_needed()
+        _create_droplet(name, droplet_spec)
 
-@cli.command('destroy')
-@click.argument('name', type=str)
-def destroy(name):
-    _set_configuration_if_needed()
-    _destroy_droplet(name)
+    @cli.command('destroy')
+    @click.argument('name', type=str)
+    def destroy(name):
+        _set_configuration_if_needed()
+        _destroy_droplet(name)
 
-@cli.command('config')
-def config():
-    _delete_current_configuration()
-    _set_configuration_if_needed()
+    @cli.command('config')
+    def config():
+        _delete_current_configuration()
+        _set_configuration_if_needed()
 
-if __name__ == '__main__':
-    print(ANSIBLE)
-    #cli()
+    cli()

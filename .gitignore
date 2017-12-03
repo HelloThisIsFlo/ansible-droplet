@@ -1,9 +1,10 @@
-ansible-droplet/ansible/inventory/ansible-machines
-ansible-droplet/ansible/group_vars/all
-ansible-droplet/ansible/roles/roles-on-droplet/roles-from-ansible-galaxy
-ansible-droplet/ansible/debug-playbook.yml
+ansible_droplet/ansible/inventory/ansible-machines
+ansible_droplet/ansible/group_vars/all
+ansible_droplet/ansible/roles/roles-on-droplet/roles-from-ansible-galaxy
+ansible_droplet/ansible/debug-playbook.yml
 .DS_Store
 .vscode
+*.pyc
 build
 dist
 ansible_droplet.egg-info

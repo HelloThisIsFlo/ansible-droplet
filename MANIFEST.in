@@ -1,6 +1,6 @@
 include README.md
 
-recursive-include ansible-droplet *
+recursive-include ansible_droplet *
 
-prune ansible-droplet/ansible/roles/roles-on-droplet/roles-from-ansible-galaxy
+prune ansible_droplet/ansible/roles/roles-on-droplet/roles-from-ansible-galaxy
 
