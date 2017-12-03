@@ -1,0 +1,10 @@
+language: python
+python:
+- '2.7'
+- '3.3'
+- pypy
+deploy:
+  provider: pypi
+  user: FlorianKempenich
+  password:
+    secure: CljfdayZulL4qytw/6at2NetGHyNV+9Ci45UkJOOsm+u90afgIONLoJ3TAHuQ8i51Q6KwYfpH50kM13Qwio18KkGCOFKXZ4+k978ojsr6HC3mxmc2+zN3s6CVKq8q84nMi0F+6ux4oKiwnJugznqCR+pFAsh7t3x65FhMSY0NJVoVkRaerjLg6CNxokegV6V46sGmbPB2YM9DRTiGnmZggjp5dJCr/3xpwCILmaIUp37Ssv445y1RW5KiyJA/S56GYheyYDy+mNVzKWYl/n/0dUaTibtNH5XkNgYTB0XbbZxAeOkVIDOqxBqQLiJOeWs8Cat4BqQWC3tpYsgq+R+I8SVneU4x2fxKbPa9F9tP7yTrrpSwoPEaVEGUVGpH46Iq36IKtgjz1SkpC+FtJ73WQEF/Xis2LTYiAcK23v/r1fxcq6WJl2IYv2slmYwZ0QEY9ynhG6dR5ZxowvArdAf+oDFzx6XaSPOykGbwvLpoCVQPrSuZ00OGK2S4TzF26zytmTrV0EjlJyOHcnRrZ6ASoP0UNafuzqFJ2aoN3T2zSOPtORzMi31sxMaVzCTlceZzKIYs25w6MDZpdFlC73G46DpIxN0ptDKjPfjtwvhl3NohXZufo2mXeCsmuAhaXfWRZ5DzZZu7DyHA7KMZ0ZubWlrO1352m+1ULZRrLTNuQw=
