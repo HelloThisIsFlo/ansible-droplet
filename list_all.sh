@@ -2,7 +2,7 @@
 
 # Debug script. Requires `jq` installed (npm tool)
 
-DO_TOKEN_FILE="/Users/floriankempenich/config-in-the-cloud/secrets/digitalocean-awesometeam/token"
+DO_TOKEN_FILE="$HOME/config-in-the-cloud/secrets/digitalocean/token"
 DO_TOKEN=$(cat $DO_TOKEN_FILE)
 
 RES=$(\
