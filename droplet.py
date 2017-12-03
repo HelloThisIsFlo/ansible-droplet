@@ -100,7 +100,7 @@ def destroy(name):
     _destroy_droplet(name)
 
 @cli.command('config')
-def create():
+def config():
     _delete_current_configuration()
     _set_configuration_if_needed()
 
