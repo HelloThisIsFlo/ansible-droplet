@@ -1,8 +1,12 @@
 language: python
+
 python:
-- '2.7'
-install: echo "Do nothing for install step"
-script: echo "No tests, just deploy!"
+  - '2.7'
+
+install:
+  - echo "Do nothing for install step"
+script:
+  - echo "No tests, just deploy!"
 deploy:
   provider: pypi
   user: FlorianKempenich
