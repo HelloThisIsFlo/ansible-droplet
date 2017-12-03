@@ -46,7 +46,7 @@ def _create_configuration_file(ssh_key, do_token):
     if not os.path.exists(os.path.join(ANSIBLE, CONFIGURATION)):
         os.makedirs(ANSIBLE + CONFIGURATION)
 
-    with open(os.path.join(ANSIBLE, CONFIGURATION, CONFIGURATION_FILE), "w") as file:
+    with open(os.path.join(ANSIBLE, CONFIGURATION, CONFIGURATION_FILE), "w+") as file:
         file.write('ssh_pub_key_name_on_digitalocean: "Main SSH Key"\n')
         file.write('ssh_pub_key_to_load_on_droplet_location: "{0}"\n'.format(ssh_key))
         file.write('digitalocean_token_location: "{0}"\n'.format(do_token))
