@@ -5,7 +5,7 @@ import subprocess
 
 SCRIPT_DIR = os.path.dirname(__file__)
 
-ANSIBLE = os.path.join(SCRIPT_DIR, 'ansible')
+ANSIBLE = os.path.join(SCRIPT_DIR, '..', 'ansible')
 REQUIREMENTS = 'roles/roles-on-droplet/roles-from-ansible-galaxy'
 CONFIGURATION = 'group_vars'
 CONFIGURATION_FILE = 'all'
@@ -105,4 +105,5 @@ def config():
     _set_configuration_if_needed()
 
 if __name__ == '__main__':
-    cli()
+    print(ANSIBLE)
+    #cli()
