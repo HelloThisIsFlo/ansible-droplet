@@ -1,7 +1,7 @@
-ansible/inventory/ansible-machines
-ansible/group_vars/all
-ansible/roles/roles-on-droplet/roles-from-ansible-galaxy
-ansible/debug-playbook.yml
+ansible-droplet/ansible/inventory/ansible-machines
+ansible-droplet/ansible/group_vars/all
+ansible-droplet/ansible/roles/roles-on-droplet/roles-from-ansible-galaxy
+ansible-droplet/ansible/debug-playbook.yml
 .DS_Store
 .vscode
 build

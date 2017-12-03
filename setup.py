@@ -19,8 +19,9 @@ setup(
         'Topic :: Utilities'
     ],
     url='https://github.com/FlorianKempenich/ansible-droplet',
-    author='Florian Kempenich',
+    author='Florian Kempenich & Antonio Pires',
     author_email='shockn745@gmail.com',
+    packages=['ansible-droplet'],
     license='MIT',
     scripts=['bin/ansible-droplet'],
     install_requires=[
