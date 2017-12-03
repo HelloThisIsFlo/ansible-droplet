@@ -1,4 +1,7 @@
 from setuptools import setup
+from os.path import expanduser
+
+HOME = expanduser("~")
 
 def readme():
     with open('README.md') as f:
@@ -6,7 +9,7 @@ def readme():
 
 setup(
     name='ansible-droplet',
-    version='0.1.3',
+    version='0.2.0',
     description='A cli to Create / Destroy DigitalOcean Droplets',
     long_description=readme(),
     keywords='digitalocean digital ocean droplet ansible ssh provision',
@@ -29,7 +32,7 @@ setup(
         'dopy==0.3.5',
         'click'
     ],
+    data_files=[(HOME, ['.ansible-droplet-inventory'])],
     include_package_data=True,
     zip_safe=False
 )
-# TODO: Investigate the `zip_safe` option

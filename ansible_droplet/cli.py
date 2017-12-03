@@ -1,5 +1,6 @@
 import click
 import os.path
+from os import symlink
 import subprocess
 
 SCRIPT_DIR = os.path.dirname(__file__)
@@ -8,6 +9,9 @@ ANSIBLE = os.path.join(SCRIPT_DIR, 'ansible')
 REQUIREMENTS = 'roles/roles-on-droplet/roles-from-ansible-galaxy'
 CONFIGURATION = 'group_vars'
 CONFIGURATION_FILE = 'all'
+INVENTORY = 'inventory'
+INVENTORY_DROPLETS_LINK = 'ansible-droplets'
+INVENTORY_DROPLETS_FILE = '.ansible-droplet-inventory'
 CREATE_PLAYBOOK = 'create-droplet-playbook.yml'
 DESTROY_PLAYBOOK = 'delete-droplet-playbook.yml'
 
@@ -34,6 +38,9 @@ def _set_configuration_if_needed():
         ssh_key, do_token = _ask_for_configuration()
         _create_configuration_file(ssh_key, do_token)
 
+    if not _has_droplet_inventory_symlink():
+        _create_droplet_inventory_symlink()
+
 def _is_configured():
     return os.path.isfile(os.path.join(ANSIBLE, CONFIGURATION, CONFIGURATION_FILE))
 
@@ -50,6 +57,21 @@ def _create_configuration_file(ssh_key, do_token):
         file.write('ssh_pub_key_name_on_digitalocean: "Main SSH Key"\n')
         file.write('ssh_pub_key_to_load_on_droplet_location: "{0}"\n'.format(ssh_key))
         file.write('digitalocean_token_location: "{0}"\n'.format(do_token))
+
+def _has_droplet_inventory_symlink():
+    return os.path.islink(os.path.join(ANSIBLE, INVENTORY, INVENTORY_DROPLETS_LINK))
+
+def _create_droplet_inventory_symlink():
+    inventory_link = os.path.join(ANSIBLE, INVENTORY, INVENTORY_DROPLETS_LINK)
+    inventory_file = os.path.join(os.path.expanduser("~"), INVENTORY_DROPLETS_FILE)
+
+    if not os.path.isfile(inventory_file):
+        raise AssertionError(
+            "Please ensure you didn't delete the generated inventory in the HOME dir\n" +
+            "In case you did, just create a new empty file at '{0}'".format(inventory_file)
+        )
+
+    symlink(inventory_file, inventory_link)
 
 def _delete_current_configuration():
     try:

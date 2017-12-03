@@ -54,9 +54,9 @@
             Hostname {{ created.droplet.ip_address }}
             User root
 
-    - name: "Add Droplet as Ansible Host in `inventory/ansible-machines`"
+    - name: "Add Droplet as Ansible Host in `~/.ansible-droplet-inventory`"
       blockinfile:
-        path: "{{ ansible_env.PWD }}/inventory/ansible-machines"
+        path: "{{ ansible_env.HOME }}/.ansible-droplet-inventory"
         state: present
         create: yes
         marker: "# {mark} Ansible-managed DigitalOcean Droplet: '{{ droplet_name }}'"

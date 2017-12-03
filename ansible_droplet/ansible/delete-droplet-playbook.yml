@@ -35,9 +35,8 @@
         state: absent
         marker: "# {mark} Ansible-managed DigitalOcean Droplet: '{{ droplet_name }}'"
 
-    - name: "Remove Droplet from Ansible Host in `inventory/ansible-machines`"
+    - name: "Remove Droplet from Ansible Host in `~/.ansible-droplet-inventory`"
       blockinfile:
-        path: "{{ ansible_env.PWD }}/inventory/ansible-machines"
+        path: "{{ ansible_env.HOME }}/.ansible-droplet-inventory"
         state: absent
         marker: "# {mark} Ansible-managed DigitalOcean Droplet: '{{ droplet_name }}'"
-
