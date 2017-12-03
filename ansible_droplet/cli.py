@@ -44,7 +44,7 @@ def _ask_for_configuration():
 
 def _create_configuration_file(ssh_key, do_token):
     if not os.path.exists(os.path.join(ANSIBLE, CONFIGURATION)):
-        os.makedirs(ANSIBLE + CONFIGURATION)
+        os.makedirs(os.path.join(ANSIBLE, CONFIGURATION))
 
     with open(os.path.join(ANSIBLE, CONFIGURATION, CONFIGURATION_FILE), "w+") as file:
         file.write('ssh_pub_key_name_on_digitalocean: "Main SSH Key"\n')
