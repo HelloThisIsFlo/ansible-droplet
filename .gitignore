@@ -4,3 +4,6 @@ ansible/roles/roles-on-droplet/roles-from-ansible-galaxy
 ansible/debug-playbook.yml
 .DS_Store
 .vscode
+build
+dist
+ansible_droplet.egg-info

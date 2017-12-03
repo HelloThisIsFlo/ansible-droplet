@@ -5,7 +5,7 @@ def readme():
         return f.read()
 
 setup(
-    name='droplet',
+    name='ansible-droplet',
     version='0.1',
     description='A cli to Create / Destroy DigitalOcean Droplets',
     long_description=readme(),
@@ -22,7 +22,7 @@ setup(
     author='Florian Kempenich',
     author_email='shockn745@gmail.com',
     license='MIT',
-    scripts=['bin/droplet'],
+    scripts=['bin/ansible-droplet'],
     install_requires=[
         'ansible',
         'dopy==0.3.5',
