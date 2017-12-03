@@ -1,2 +1,2 @@
 # This allows to use `localhost` to run the commands locally, and not have warnings
-localhost ansible_connection=local
+localhost ansible_connection=local ansible_python_interpreter="/usr/bin/env python"

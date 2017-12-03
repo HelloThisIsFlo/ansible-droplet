@@ -5,10 +5,6 @@
     do_token: "{{ lookup('file', '{{ digitalocean_token_location }}') }}"
 
   tasks:
-    - name: "Install dopy in a virtualenv and set ansible to use it"
-      include_role:
-        name: setup-virtualenv
-
     # `droplet_name` need to be passed as `--extra-var` !!
     - name: "Ensure 'droplet_name' is passed as parameter"
       assert:

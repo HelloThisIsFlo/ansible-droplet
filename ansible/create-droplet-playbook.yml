@@ -16,10 +16,6 @@
       assert:
         that: droplet_spec_name != ""
 
-    - name: "Install dopy in a virtualenv and set ansible to use it"
-      include_role:
-        name: setup-virtualenv
-
     - name: "Load the specs of the droplet to create"
       include_role:
         name: load-droplet-specs

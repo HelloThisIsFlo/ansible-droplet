@@ -1,3 +1,7 @@
+# Ansible is used to create / destroy DO machines
 ansible
-virtualenv
+# Required by the DigitalOcean ansible module
+dopy==0.3.5
+
+# For the CLI
 click
