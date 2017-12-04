@@ -59,7 +59,11 @@ def _create_configuration_file(ssh_key, do_token):
         file.write('digitalocean_token_location: "{0}"\n'.format(do_token))
 
 def _has_droplet_inventory_symlink():
-    return os.path.islink(os.path.join(ANSIBLE, INVENTORY, INVENTORY_DROPLETS_LINK))
+    inventory_link = os.path.join(ANSIBLE, INVENTORY, INVENTORY_DROPLETS_LINK)
+    inventory_file = os.path.join(os.path.expanduser("~"), INVENTORY_DROPLETS_FILE)
+
+    return (os.path.islink(inventory_link)
+            and os.path.isfile(inventory_file))
 
 def _create_droplet_inventory_symlink():
     inventory_link = os.path.join(ANSIBLE, INVENTORY, INVENTORY_DROPLETS_LINK)
