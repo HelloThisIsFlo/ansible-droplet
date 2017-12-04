@@ -71,12 +71,12 @@ def _create_droplet_inventory_symlink():
 
     if not os.path.isfile(inventory_file):
         raise AssertionError(
-            "\n" +
+            "\n\n" +
             "/!\\/!\\/!\\/!\\/!\\/!\\/!\\/!\\/!\\/!\\/!\\/!\\/!\\/!\\/!\\/!\\/!\\/!\\/!\\/!\\/!\\\n" +
             "Please ensure you didn't delete the generated inventory in the HOME dir\n" +
-            "In case you did, just create a new empty file at '{0}'" +
+            "In case you did, just create a new empty file at '{0}'".format(inventory_file) +
             "/!\\/!\\/!\\/!\\/!\\/!\\/!\\/!\\/!\\/!\\/!\\/!\\/!\\/!\\/!\\/!\\/!\\/!\\/!\\/!\\/!\\\n" +
-            "\n".format(inventory_file)
+            "\n"
         )
 
     symlink(inventory_file, inventory_link)
