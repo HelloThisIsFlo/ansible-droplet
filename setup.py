@@ -9,7 +9,7 @@ def readme():
 
 setup(
     name='ansible-droplet',
-    version='0.2.3.0',
+    version='0.2.5.0',
     description='A cli to Create / Destroy DigitalOcean Droplets',
     long_description=readme(),
     keywords='digitalocean digital ocean droplet ansible ssh provision',
