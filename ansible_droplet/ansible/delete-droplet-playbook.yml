@@ -39,4 +39,4 @@
       blockinfile:
         path: "{{ ansible_env.HOME }}/.ansible-droplet-inventory"
         state: absent
-        marker: "# {mark} Ansible-managed DigitalOcean Droplet: '{{ droplet_name }}'"
+        marker: "### ANSIBLE MANAGED - DigitalOcean Droplet: '{{ droplet_name }}' - {mark} #######################"

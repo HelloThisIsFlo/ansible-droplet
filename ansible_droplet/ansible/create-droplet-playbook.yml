@@ -59,7 +59,7 @@
         path: "{{ ansible_env.HOME }}/.ansible-droplet-inventory"
         state: present
         create: yes
-        marker: "# {mark} Ansible-managed DigitalOcean Droplet: '{{ droplet_name }}'"
+        marker: "### ANSIBLE MANAGED - DigitalOcean Droplet: '{{ droplet_name }}' - {mark} #######################"
         block: "{{ droplet_name }} ansible_host={{ created.droplet.ip_address }} ansible_user=root ansible_python_interpreter=/usr/bin/python3"
 
     - name: "Refresh inventory"
