@@ -48,7 +48,7 @@
       blockinfile:
         path: "{{ ansible_env.HOME }}/.ssh/config"
         state: present
-        marker: "# {mark} Ansible-managed DigitalOcean Droplet: '{{ droplet_name }}'"
+        marker: "### ANSIBLE MANAGED - DigitalOcean Droplet: '{{ droplet_name }}' - {mark} #######################"
         block: |
           Host {{ droplet_name }}
             Hostname {{ created.droplet.ip_address }}

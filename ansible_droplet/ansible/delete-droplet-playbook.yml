@@ -33,7 +33,7 @@
       blockinfile:
         path: "{{ ansible_env.HOME }}/.ssh/config"
         state: absent
-        marker: "# {mark} Ansible-managed DigitalOcean Droplet: '{{ droplet_name }}'"
+        marker: "### ANSIBLE MANAGED - DigitalOcean Droplet: '{{ droplet_name }}' - {mark} #######################"
 
     - name: "Remove Droplet from Ansible Host in `~/.ansible-droplet-inventory`"
       blockinfile:
