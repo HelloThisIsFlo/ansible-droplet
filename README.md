@@ -1,6 +1,10 @@
 
 TBD
 
+> ## Important Note
+> Use a **python 2** virtualenv. 
+> Not compatible with **python 3** for now
+
 ## Installation
 
 ```
