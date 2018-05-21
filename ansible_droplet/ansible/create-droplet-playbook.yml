@@ -1,20 +1,51 @@
-- hosts: localhost
+################################################
+## This playbook has 3 steps:
+##  1) Create Droplet on DigitalOcean & Update inventory / ssh config
+##  2) Create new User account on Droplet
+##  3) Install Software w/ new User account
+##
+##
+## These steps are run on different machines w/ different users:
+##  1) Create Droplet ...
+##     -> Runs on: Localhost
+##     ->      as: Current user
+##  2) Create new User account ...
+##     -> Runs on: Newly Created Droplet
+##     ->      as: root
+##  3) Install Software ...
+##     -> Runs on: Newly Created  Droplet
+##     ->      as: Newly Created User
 
-  # `droplet_name`      need to be passed as `--extra-var` !!
-  # `droplet_spec_name` need to be passed as `--extra-var` !!
-  vars:
-    # Load config
-    do_token: "{{ lookup('file', '{{ digitalocean_token_location }}') }}"
-    ssh_pub_key_to_load_on_droplet: "{{ lookup('file', '{{ ssh_pub_key_to_load_on_droplet_location }}') }}"
+
+#####################################################################
+###                           STEP 1                               ##
+### Create Droplet on DigitalOcean & Update inventory / ssh config ##
+###                                                                ##
+###      Host: Localhost                                           ##
+###  SSH User: Current user                                        ##
+#####################################################################
+# `droplet_name`      need to be passed as `--extra-var` !!
+# `droplet_spec_name` need to be passed as `--extra-var` !!
+- hosts: localhost
+  remote_user: root
 
   tasks:
-    - name: "Ensure 'droplet_name' is passed as parameter"
+    - name: "Ensure required parameters - via config"
       assert:
-        that: droplet_name != ""
-
-    - name: "Ensure 'droplet_spec_name' is passed as parameter"
+        that: 
+          - do_token != ""
+          - ssh_pub_key_name_on_digitalocean != ""
+          - ssh_pub_key_to_load_on_droplet != ""
+          - do_token != ""
+          - user_to_create_username != ""
+          - user_to_create_default_password != ""
+        msg: "'do_token', 'ssh_pub_key_name_on_digitalocean', 'ssh_pub_key_to_load_on_droplet', 'do_token', 'user_to_create_username' and 'user_to_create_default_password' must be set in the configuration"
+    - name: "Ensure required parameters - via --extra-vars"
       assert:
-        that: droplet_spec_name != ""
+        that: 
+          - droplet_name != ""
+          - droplet_spec_name != ""
+        msg: "'droplet_name' and 'droplet_spec_name' must be passed as parameters with '--extra-vars'"
 
     - name: "Load the specs of the droplet to create"
       include_role:
@@ -22,7 +53,7 @@
       vars:
         droplet_spec_name: droplet_spec_name
 
-    - name: "Ensure SSH Key exists at DigitalOcean | Using key at: {{ ssh_pub_key_to_load_on_droplet_location }}"
+    - name: "Ensure SSH Key exists at DigitalOcean"
       digital_ocean:
         command: ssh
         state: present
@@ -52,7 +83,7 @@
         block: |
           Host {{ droplet_name }}
             Hostname {{ created.droplet.ip_address }}
-            User root
+            User {{ user_to_create_username }}
 
     - name: "Add Droplet as Ansible Host in `~/.ansible-droplet-inventory`"
       blockinfile:
@@ -60,14 +91,27 @@
         state: present
         create: yes
         marker: "### ANSIBLE MANAGED - DigitalOcean Droplet: '{{ droplet_name }}' - {mark} #######################"
-        block: "{{ droplet_name }} ansible_host={{ created.droplet.ip_address }} ansible_user=root ansible_python_interpreter=/usr/bin/python3"
+        block: "{{ droplet_name }} ansible_host={{ created.droplet.ip_address }} ansible_user={{ user_to_create_username }} ansible_python_interpreter=/usr/bin/python3"
 
     - name: "Refresh inventory"
       meta: refresh_inventory
 
 
+
+#####################################################################
+###                           STEP 2                               ##
+###              Create new User account on Droplet                ##
+###                                                                ##
+###      Host: Newly Created Droplet                               ##
+###  SSH User: root                                                ##
+#####################################################################
 - hosts: "{{ droplet_name }}"
   gather_facts: False
+  vars:
+    # If using `remote_user` at the same level as `hosts`, it would 
+    # not override the `ansible_user` variable from the inventory
+    ansible_user: root
+
   tasks:
     - name: "Wait for Droplet available"
       wait_for_connection:
@@ -88,14 +132,48 @@
       vars:
         swapfile_size: "{{ droplet_specs.swap }}"
 
-    - name: "Install Glances Webserver as a service"
+    - name: "Create new sudo user w/ default password"
       include_role:
-        name: glances
+        name: create-new-sudo-user
+      vars:
+        username: "{{ user_to_create_username }}"
+        default_password: "{{ user_to_create_default_password }}"
+        authorized_ssh_key: "{{ ssh_pub_key_to_load_on_droplet }}"
+
+
+
+#####################################################################
+###                           STEP 3                               ##
+###            Install Software w/ new User account                ##
+###                                                                ##
+###      Host: Newly Created Droplet                               ##
+###  SSH User: Newly Created User                                  ##
+#####################################################################
+- hosts: "{{ droplet_name }}"
+  gather_facts: False
+  vars:
+    # If using `remote_user` at the same level as `hosts`, it would 
+    # not override the `ansible_user` variable from the inventory
+    ansible_user: "{{ user_to_create_username }}"
+
+  tasks:
+    # TODO: Fix Glances installation (or remove, but be sure to re-locate the daemon part!!)
+    # TODO: Fix Glances installation (or remove, but be sure to re-locate the daemon part!!)
+    # TODO: Fix Glances installation (or remove, but be sure to re-locate the daemon part!!)
+    # - name: "Install Glances Webserver as a service"
+    #   include_role:
+    #     name: glances
 
     - name: "Enable advanced metrics on DigitalOcean"
       shell: "curl -sSL https://agent.digitalocean.com/install.sh | sh"
 
     - debug: 
-       msg: "Droplet '{{ droplet_name }}' succesfuly created | IP = {{ ansible_default_ipv4.address }}"
-    
-
+       msg:
+        - "Droplet '{{ droplet_name }}' succesfuly created"
+        - ""
+        - "IP = {{ ansible_default_ipv4.address }}"
+        - "User = {{ user_to_create_username }}"
+        - "Password = {{ user_to_create_password }}"
+        - ""
+        - "You can now ssh to the droplet with `ssh {{ droplet_name }}`"
+        - "Don't forget to change the default password!"

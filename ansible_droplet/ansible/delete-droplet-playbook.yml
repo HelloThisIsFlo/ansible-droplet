@@ -1,14 +1,14 @@
 - hosts: localhost
 
-  vars:
-    # `droplet_name` need to be passed as `--extra-var` !!
-    do_token: "{{ lookup('file', '{{ digitalocean_token_location }}') }}"
-
   tasks:
-    # `droplet_name` need to be passed as `--extra-var` !!
-    - name: "Ensure 'droplet_name' is passed as parameter"
+    - name: "Ensure required parameters - via config"
+      assert:
+        that: do_token != ""
+        msg: "'do_token' must be specified in the config"
+    - name: "Ensure required parameters - via --extra-vars"
       assert:
         that: droplet_name != ""
+        msg: "'droplet_name' must be passed as parameters with '--extra-vars'"
 
     - name: "Delete droplet"
       block:

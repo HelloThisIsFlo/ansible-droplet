@@ -30,7 +30,8 @@ setup(
     install_requires=[
         'ansible',
         'dopy==0.3.5',
-        'click'
+        'click',
+        'passlib'
     ],
     data_files=[(HOME, ['.ansible-droplet-inventory'])],
     include_package_data=True,

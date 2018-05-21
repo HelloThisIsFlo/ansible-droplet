@@ -2,6 +2,8 @@
 ansible
 # Required by the DigitalOcean ansible module
 dopy==0.3.5
+# To hash default password
+passlib
 
 # For the CLI
 click

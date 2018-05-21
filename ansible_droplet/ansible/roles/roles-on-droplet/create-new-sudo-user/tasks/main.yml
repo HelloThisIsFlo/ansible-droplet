@@ -1,0 +1,25 @@
+- name: "Ensure required parameters provided"
+  assert:
+    that: 
+      - username != ""
+      - default_password != ""
+      - authorized_ssh_key != ""
+    msg: "Please provide the required parameters!"
+
+- name: Block w/ 'become' escalation
+  block:
+    - name: Create new sudo user
+      user:
+        name: "{{ username }}"
+        password: "{{ default_password|password_hash('sha512') }}"
+        create_home: yes
+        groups: sudo
+        update_password: on_create
+
+    - name: "Add SSH key to autorized_keys"
+      authorized_key:
+        user: "{{ username }}"
+        key: "{{ authorized_ssh_key }}"
+        state: present
+  become: yes
+

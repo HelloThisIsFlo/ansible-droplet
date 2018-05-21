@@ -2,6 +2,7 @@ import click
 import os.path
 from os import symlink
 import subprocess
+from glob import glob
 
 SCRIPT_DIR = os.path.dirname(__file__)
 
@@ -15,8 +16,7 @@ INVENTORY_DROPLETS_FILE = '.ansible-droplet-inventory'
 CREATE_PLAYBOOK = 'create-droplet-playbook.yml'
 DESTROY_PLAYBOOK = 'delete-droplet-playbook.yml'
 
-DEFAULT_SSH_KEY = '{{ ansible_env.HOME }}/.ssh/id_rsa.pub'
-# DEFAULT_DO_TOKEN = '"{{ ansible_env.HOME }}/secrets/digitalocean/token"'
+DEFAULT_SSH_KEY = '~/.ssh/id_rsa.pub'
 
 def _install_requirements_if_needed():
     if not _are_requirements_installed():
@@ -35,8 +35,8 @@ def _install_requirements():
 
 def _set_configuration_if_needed():
     if not _is_configured():
-        ssh_key, do_token = _ask_for_configuration()
-        _create_configuration_file(ssh_key, do_token)
+        ssh_key_path, ssh_key_name, do_token_path, user_username, user_default_pass = _ask_for_configuration() 
+        _create_configuration_file(ssh_key_path, ssh_key_name, do_token_path, user_username, user_default_pass)
 
     if not _has_droplet_inventory_symlink():
         _create_droplet_inventory_symlink()
@@ -45,18 +45,34 @@ def _is_configured():
     return os.path.isfile(os.path.join(ANSIBLE, CONFIGURATION, CONFIGURATION_FILE))
 
 def _ask_for_configuration():
-    ssh_key = click.prompt('Your ssh public key path', type=str, default=DEFAULT_SSH_KEY)
-    do_token = click.prompt('Your digital ocean token path', type=str)
-    return ssh_key, do_token
+    # TODO Remove defaults (or put as constants)
+    ssh_key_path      = click.prompt('[SSH PUBLIC KEY] - Path?', type=str, default=DEFAULT_SSH_KEY)
+    ssh_key_name      = click.prompt('[SSH PUBLIC KEY] - Name on DigitalOcean?', type=str, default="Main SSH Key")
+    do_token_path     = click.prompt('[Digital Ocean Token] - Path?', type=str, default="~/config-in-the-cloud/secrets/digitalocean/token")
+    user_username     = click.prompt('[User on Droplet] - Username?', type=str, default="bonjour")
+    user_default_pass = click.prompt('[User on Droplet] - Default Password?', type=str, default="pass")
+    # user_username     = click.prompt('[User on Droplet] - Username?', type=str)
+    # user_default_pass = click.prompt('[User on Droplet] - Default Password?', type=str)
+    return ssh_key_path, ssh_key_name, do_token_path, user_username, user_default_pass
 
-def _create_configuration_file(ssh_key, do_token):
+def _create_configuration_file(ssh_key_path, ssh_key_name, do_token_path, user_username, user_default_pass):
     if not os.path.exists(os.path.join(ANSIBLE, CONFIGURATION)):
         os.makedirs(os.path.join(ANSIBLE, CONFIGURATION))
 
+    def lookup_file_format(path):
+        # Regarding the curly braces:
+        # Expected result '{{'
+        # But python interprets '{' in strings, so need to escape '{' with '{{'
+        # since expected result is '{{', we need to escape twice, hence '{{{{'
+        ansible_compatible_path = os.path.expanduser(path)
+        return "{{{{ lookup('file', '{0}') }}}}".format(ansible_compatible_path)
+
     with open(os.path.join(ANSIBLE, CONFIGURATION, CONFIGURATION_FILE), "w+") as file:
-        file.write('ssh_pub_key_name_on_digitalocean: "Main SSH Key"\n')
-        file.write('ssh_pub_key_to_load_on_droplet_location: "{0}"\n'.format(ssh_key))
-        file.write('digitalocean_token_location: "{0}"\n'.format(do_token))
+        file.write('ssh_pub_key_name_on_digitalocean: "{0}"\n'.format(ssh_key_name))
+        file.write('ssh_pub_key_to_load_on_droplet: "{0}"\n'.format(lookup_file_format(ssh_key_path)))
+        file.write('do_token: "{0}"\n'.format(lookup_file_format(do_token_path)))
+        file.write('user_to_create_username: "{0}"\n'.format(user_username))
+        file.write('user_to_create_default_password: "{0}"\n'.format(user_default_pass))
 
 def _has_droplet_inventory_symlink():
     inventory_link = os.path.join(ANSIBLE, INVENTORY, INVENTORY_DROPLETS_LINK)
