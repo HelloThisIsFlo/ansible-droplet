@@ -9,7 +9,7 @@ def readme():
 
 setup(
     name='ansible-droplet',
-    version='0.2.5.1.1',
+    version='0.3'
     description='A cli to Create / Destroy DigitalOcean Droplets',
     long_description=readme(),
     keywords='digitalocean digital ocean droplet ansible ssh provision',
@@ -23,7 +23,7 @@ setup(
     ],
     url='https://github.com/FlorianKempenich/ansible-droplet',
     author='Florian Kempenich & Antonio Pires',
-    author_email='shockn745@gmail.com',
+    author_email='Flori@nKempenich.com',
     packages=['ansible_droplet'],
     license='MIT',
     scripts=['bin/ansible-droplet'],
