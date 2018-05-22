@@ -1,3 +1,9 @@
+- name: "Ensure running as Root"
+  assert:
+    that:
+      - "{{ ansible_user_uid }} == 0"
+    msg: "Please run this role as root!"
+
 - name: "Install Glances"
   block:
     - name: "Install `pip3`"
@@ -5,31 +11,24 @@
         name: python3-pip
         state: latest
         update_cache: yes
-      become: yes
 
     - name: "Upgrade `pip3`"
       pip:
         name: pip
         executable: pip3
         state: latest
-      become: yes
 
-    - name: "Install `glances`"
-      pip:
-        name: glances
-        executable: pip3
-        state: latest
-      become: yes
-
-    - name: "Install `glances` optional dependencies"
+    - name: "Install `glances` and `glances` optional dependencies"
       pip:
         name: "{{ item }}"
         executable: pip3
         state: latest
-      become: yes
+        extra_args: --user
       with_items:
+        - glances
         - docker
         - bottle
+
 
 - name: "Start Glances Web server as Daemon"
   block:
@@ -45,4 +44,4 @@
         name: glances.service
         state: started
         enabled: yes
-      
+    
