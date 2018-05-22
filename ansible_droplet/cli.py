@@ -17,6 +17,7 @@ CREATE_PLAYBOOK = 'create-droplet-playbook.yml'
 DESTROY_PLAYBOOK = 'delete-droplet-playbook.yml'
 
 DEFAULT_SSH_KEY = '~/.ssh/id_rsa.pub'
+DEFAULT_SSH_KEY_NAME = 'Main SSH Key'
 
 def _install_requirements_if_needed():
     if not _are_requirements_installed():
@@ -45,14 +46,11 @@ def _is_configured():
     return os.path.isfile(os.path.join(ANSIBLE, CONFIGURATION, CONFIGURATION_FILE))
 
 def _ask_for_configuration():
-    # TODO Remove defaults (or put as constants)
-    ssh_key_path      = click.prompt('[SSH PUBLIC KEY] - Path?', type=str, default=DEFAULT_SSH_KEY)
-    ssh_key_name      = click.prompt('[SSH PUBLIC KEY] - Name on DigitalOcean?', type=str, default="Main SSH Key")
-    do_token_path     = click.prompt('[Digital Ocean Token] - Path?', type=str, default="~/config-in-the-cloud/secrets/digitalocean/token")
-    user_username     = click.prompt('[User on Droplet] - Username?', type=str, default="bonjour")
-    user_default_pass = click.prompt('[User on Droplet] - Default Password?', type=str, default="pass")
-    # user_username     = click.prompt('[User on Droplet] - Username?', type=str)
-    # user_default_pass = click.prompt('[User on Droplet] - Default Password?', type=str)
+    ssh_key_path      = click.prompt('[SSH PUBLIC KEY] - Path to file?', type=str, default=DEFAULT_SSH_KEY)
+    ssh_key_name      = click.prompt('[SSH PUBLIC KEY] - Name on DigitalOcean?', type=str, default=DEFAULT_SSH_KEY_NAME)
+    do_token_path     = click.prompt('[Digital Ocean Token] - Path to file?', type=str)
+    user_username     = click.prompt('[User on Droplet] - Username?', type=str)
+    user_default_pass = click.prompt('[User on Droplet] - Default Password?', type=str)
     return ssh_key_path, ssh_key_name, do_token_path, user_username, user_default_pass
 
 def _create_configuration_file(ssh_key_path, ssh_key_name, do_token_path, user_username, user_default_pass):
