@@ -150,7 +150,7 @@
         - "IP = {{ ansible_default_ipv4.address }}"
         - "User = {{ user_to_create_username }}"
         - "Password = {{ user_to_create_default_password }}"
-        - "Glance server running at: http://138.68.100.84:61208"
+        - "Glance server running at: http://{{ ansible_default_ipv4.address }}:61208"
         - ""
         - "You can now ssh to the droplet with `ssh {{ droplet_name }}`"
         - "Don't forget to change the default password!"
