@@ -35,7 +35,7 @@ def _install_requirements():
 
 def _set_configuration_if_needed():
     if not _is_configured():
-        ssh_key_path, ssh_key_name, do_token_path, user_username, user_default_pass = _ask_for_configuration() 
+        ssh_key_path, ssh_key_name, do_token_path, user_username, user_default_pass = _ask_for_configuration()
         _create_configuration_file(ssh_key_path, ssh_key_name, do_token_path, user_username, user_default_pass)
 
     if not _has_droplet_inventory_symlink():

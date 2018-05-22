@@ -155,25 +155,35 @@
     # If using `remote_user` at the same level as `hosts`, it would 
     # not override the `ansible_user` variable from the inventory
     ansible_user: "{{ user_to_create_username }}"
+    ansible_become_pass: "{{ user_to_create_default_password }}"
 
   tasks:
-    # TODO: Fix Glances installation (or remove, but be sure to re-locate the daemon part!!)
-    # TODO: Fix Glances installation (or remove, but be sure to re-locate the daemon part!!)
-    # TODO: Fix Glances installation (or remove, but be sure to re-locate the daemon part!!)
-    # - name: "Install Glances Webserver as a service"
-    #   include_role:
-    #     name: glances
+    - name: Try Block
+      block:
+        # TODO: Fix Glances installation (or remove, but be sure to re-locate the daemon part!!)
+        # TODO: Fix Glances installation (or remove, but be sure to re-locate the daemon part!!)
+        # TODO: Fix Glances installation (or remove, but be sure to re-locate the daemon part!!)
+        # - name: "Install Glances Webserver as a service"
+        #   include_role:
+        #     name: glances
 
-    - name: "Enable advanced metrics on DigitalOcean"
-      shell: "curl -sSL https://agent.digitalocean.com/install.sh | sh"
+        - name: "Enable advanced metrics on DigitalOcean"
+          shell: "curl -sSL https://agent.digitalocean.com/install.sh | sh"
+          become: yes
 
-    - debug: 
-       msg:
-        - "Droplet '{{ droplet_name }}' succesfuly created"
-        - ""
-        - "IP = {{ ansible_default_ipv4.address }}"
-        - "User = {{ user_to_create_username }}"
-        - "Password = {{ user_to_create_password }}"
-        - ""
-        - "You can now ssh to the droplet with `ssh {{ droplet_name }}`"
-        - "Don't forget to change the default password!"
+        - debug:
+            msg:
+            - "Droplet '{{ droplet_name }}' succesfuly created"
+            - ""
+            - "IP = {{ ansible_default_ipv4.address }}"
+            - "User = {{ user_to_create_username }}"
+            - "Password = {{ user_to_create_default_password }}"
+            - ""
+            - "You can now ssh to the droplet with `ssh {{ droplet_name }}`"
+            - "Don't forget to change the default password!"
+      rescue:
+        - debug:
+            msg:
+              - "Problem during setup!"
+              - "Is it the first time this is ran?"
+              - "If not, did you change the sudo password for the default user?"
