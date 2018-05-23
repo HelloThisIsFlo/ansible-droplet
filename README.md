@@ -5,8 +5,9 @@
 
 * Create **ready-to-use** Ubuntu Droplet on Digital Ocean
 * One **simple** command: `ansible-droplet create my_droplet`
-* SSH to it with its **name**: `ssh my_droplet`
-* Access it in any other _ansible playbook_ via its **name**: `- hosts: my_droplet`
+* Access it directly via its **name**:
+  * SSH: `ssh my_droplet`
+  * Ansible: `- hosts: my_droplet`
 * And more:
   * New sudo user automatically created
   * Swap added (configurable)
