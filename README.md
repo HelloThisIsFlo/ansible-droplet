@@ -1,4 +1,5 @@
 # Ansible Droplet
+[![Travis](https://img.shields.io/travis/FlorianKempenich/ansible-droplet.svg)](https://travis-ci.org/FlorianKempenich/ansible-droplet) [![PyPI](https://img.shields.io/pypi/v/ansible-droplet.svg)](https://pypi.org/project/ansible-droplet/)
 
 `ansible-droplet` is a cli tool to easily create _ready-to-use_ droplets on Digital Ocean.
 
