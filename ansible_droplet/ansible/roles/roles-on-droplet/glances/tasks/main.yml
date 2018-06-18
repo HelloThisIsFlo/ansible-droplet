@@ -6,18 +6,10 @@
 
 - name: "Install Glances"
   block:
-    - name: "Install `pip3`"
-      apt:
-        name: python3-pip
-        state: latest
-        update_cache: yes
-
-    - name: "Upgrade `pip3`"
-      pip:
-        name: pip
-        executable: pip3
-        state: latest
-
+    - name: "Install Python / pip"
+      include_role:
+        name: FlorianKempenich.python-virtualenv
+        
     - name: "Install `glances` and `glances` optional dependencies"
       pip:
         name: "{{ item }}"
@@ -28,6 +20,9 @@
         - glances
         - docker
         - bottle
+      environment:
+        PATH: "{{ ansible_env.HOME }}/.local/bin:{{ ansible_env.PATH }}"
+        # ^-- Add `~/.local/bin` to path to access `pip3`
 
 
 - name: "Start Glances Web server as Daemon"
