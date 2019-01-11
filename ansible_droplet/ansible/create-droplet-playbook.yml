@@ -135,7 +135,13 @@
     - name: "Enable advanced metrics on DigitalOcean"
       shell: "curl -sSL https://agent.digitalocean.com/install.sh | sh"
 
-    - name: "Create new sudo user w/ default password"
+    - name: "Install ZSH"
+      include_role:
+        name: TOOCS.zsh
+      vars:
+        skip_antigen: true
+
+    - name: "Create new sudo user w/ default password & set ZSH as shell"
       include_role:
         name: create-new-sudo-user
       vars:

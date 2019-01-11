@@ -14,6 +14,7 @@
         password: "{{ default_password|password_hash('sha512') }}"
         create_home: yes
         groups: sudo
+        shell: /bin/zsh
         update_password: on_create
 
     - name: "Add SSH key to autorized_keys"
