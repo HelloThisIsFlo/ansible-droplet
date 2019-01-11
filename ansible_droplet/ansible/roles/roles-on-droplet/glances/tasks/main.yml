@@ -9,6 +9,9 @@
     - name: "Install Python / pip"
       include_role:
         name: TOOCS.python
+      vars:
+         python_versions:
+          - 3.7.0
         
     - name: "Install `glances` and `glances` optional dependencies"
       pip:
