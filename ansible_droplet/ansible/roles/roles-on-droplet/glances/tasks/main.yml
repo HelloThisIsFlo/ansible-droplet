@@ -24,8 +24,8 @@
         - docker
         - bottle
       environment:
-        PATH: "{{ ansible_env.HOME }}/.local/bin:{{ ansible_env.PATH }}"
-        # ^-- Add `~/.local/bin` to path to access `pip3`
+        PATH: "{{ ansible_env.HOME }}/.pyenv/shims:{{ ansible_env.PATH }}"
+        # ^-- Add `~/.local/bin` to path to access `pip3` with pyenv
 
 
 - name: "Start Glances Web server as Daemon"

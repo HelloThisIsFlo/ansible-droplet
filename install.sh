@@ -1,3 +1,3 @@
 #!/bin/bash
 
-python setup.py install
+pipenv run python setup.py install
