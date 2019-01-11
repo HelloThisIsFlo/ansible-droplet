@@ -8,7 +8,7 @@
   block:
     - name: "Install Python / pip"
       include_role:
-        name: FlorianKempenich.python-virtualenv
+        name: TOOCS.python
         
     - name: "Install `glances` and `glances` optional dependencies"
       pip:
