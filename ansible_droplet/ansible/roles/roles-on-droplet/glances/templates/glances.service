@@ -3,7 +3,7 @@ Description=Glances Webserver on port 61208
 
 [Service]
 After=network.target
-ExecStart=/root/.local/bin/glances -w
+ExecStart={{ python_installation }}/bin/glances -w
 Restart=on-abort
 
 [Install]

@@ -4,34 +4,27 @@
       - "{{ ansible_user_uid }} == 0"
     msg: "Please run this role as root!"
 
-- name: "Install Glances"
-  block:
-    - name: "Install Python / pip"
-      include_role:
-        name: TOOCS.python
-      vars:
-         python_versions:
-          - 3.7.0
-        
-    - name: "Install `glances` and `glances` optional dependencies"
-      pip:
-        name: "{{ item }}"
-        executable: pip3
-        state: latest
-        extra_args: --user
-      with_items:
-        - glances
-        - docker
-        - bottle
-      environment:
-        PATH: "{{ ansible_env.HOME }}/.pyenv/shims:{{ ansible_env.PATH }}"
-        # ^-- Add `~/.local/bin` to path to access `pip3` with pyenv
+- set_fact:
+    python_version: 3.7.0
 
+- name: "Install Python / pip"
+  include_role:
+    name: TOOCS.python
+  vars:
+    python_versions:
+      - "{{ python_version }}"
+    global_pip_packages:
+      - glances
+      - docker
+      - bottle
+
+- set_fact:
+    python_installation: "/root/.asdf/installs/python/{{ python_version }}"
 
 - name: "Start Glances Web server as Daemon"
   block:
     - name: "Copy `glances.service` file"
-      copy:
+      template:
         src: glances.service
         dest: /etc/systemd/system/glances.service
         owner: root
