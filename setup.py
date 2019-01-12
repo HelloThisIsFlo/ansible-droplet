@@ -28,7 +28,7 @@ setup(
     license='MIT',
     scripts=['bin/ansible-droplet'],
     install_requires=[
-        'ansible',
+        'ansible>=2.6',
         'dopy==0.3.5',
         'click',
         'passlib'
